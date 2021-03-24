@@ -10,6 +10,8 @@ class UCameraComponent;
 class USpringArmComponent;
 class USHealthComponent;
 class ASWeapon;
+class APickup;
+class UItem;
 
 
 UCLASS()
@@ -18,6 +20,8 @@ class PROJECTFAHRENHEIT_API ASCharacter : public ACharacter
 	GENERATED_BODY()
 
 public:
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Health")
+	float Health;
 	// Sets default values for this character's properties
 	ASCharacter();
 
@@ -49,6 +53,14 @@ protected:
 	
 	void EndZoom();
 
+	UFUNCTION()
+		void OnOverlapBegin(class UPrimitiveComponent* OverlappedComp, class AActor* OtherActor, class UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
+
+	
+
+	UFUNCTION(BlueprintCallable, Category = "Items")
+	void UseItem(class UItem* Item);
+
 	
 	ASWeapon* CurrentWeapon;
 
@@ -66,8 +78,11 @@ protected:
 
 	void StopFire();
 
-	UFUNCTION()
-	void OnHealthChanged(USHealthComponent* InHealthComp, float Health, float HealthDelta, const class UDamageType* DamageType, class AController* InstigatedBy, AActor* DamageCauser);
+	/*UFUNCTION()
+	void OnHealthChanged(USHealthComponent* InHealthComp, float Health, float HealthDelta, const class UDamageType* DamageType, class AController* InstigatedBy, AActor* DamageCauser);*/
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Camera", meta = (AllowPrivateAccess = "true"))
+	class UInventoryComponent* Inventory;
 
 	/* Pawn Died */
 	UPROPERTY(BlueprintReadOnly, Category="Player")
